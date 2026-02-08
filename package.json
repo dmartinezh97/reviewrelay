@@ -16,7 +16,8 @@
     "test:watch": "vitest",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio"
+    "prisma:studio": "prisma studio",
+    "sync-mirror": "bash scripts/sync-mirror.sh"
   },
   "dependencies": {
     "@octokit/rest": "^21.1.0",
