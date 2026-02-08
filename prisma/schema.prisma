@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model WebhookDelivery {
+  id         Int      @id @default(autoincrement())
+  source     String   // "gitea" | "github"
+  deliveryId String   @map("delivery_id")
+  event      String
+  processedAt DateTime @default(now()) @map("processed_at")
+
+  @@unique([source, deliveryId])
+  @@map("webhook_deliveries")
+}
+
+model PrMap {
+  id             Int      @id @default(autoincrement())
+  giteaRepo      String   @map("gitea_repo")
+  giteaPrNumber  Int      @map("gitea_pr_number")
+  githubRepo     String   @map("github_repo")
+  githubPrNumber Int      @map("github_pr_number")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@unique([giteaRepo, giteaPrNumber])
+  @@map("pr_map")
+}
+
+model ProcessedReview {
+  id             Int      @id @default(autoincrement())
+  githubRepo     String   @map("github_repo")
+  githubPrNumber Int      @map("github_pr_number")
+  githubReviewId BigInt   @map("github_review_id")
+  processedAt    DateTime @default(now()) @map("processed_at")
+
+  @@unique([githubRepo, githubPrNumber, githubReviewId])
+  @@map("processed_reviews")
+}
